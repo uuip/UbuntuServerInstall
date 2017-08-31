@@ -1,9 +1,9 @@
-1.ʹ�ù���iso�ļ�����U������ʱiso:\pool\main\l�ļ��У�m�ļ����в����ļ����ļ����������ضϡ�
-2.�����ʾ����cd-romʱ��alt+F2��umount /media,Ȼ�󷵻�alt+f1����
-3.��װ������ʹ�ô���ʱ���ڱ�����û������ģ���װ�ú�������롣
+1.使用光盘iso文件制作U盘启动时iso:\pool\main\l文件夹，m文件夹中部分文件的文件名过长被截断。
+2.如果提示挂载cd-rom时，alt+F2，umount /media,然后返回alt+f1重试
+3.安装过程中使用串口时，在本机是没用输出的；安装好后会有输入。
 
-
-Ubuntu 14Ҫִ������Ĳ���
+如果安装时不是使用串口安装，而安装后又想要串口输出的，执行下面操作。使用串口安装的会安装时自动创建。
+Ubuntu 14要执行下面的操作
 1) Create a file called /etc/init/ttyS0.conf containing the following: 
 # ttyS0 - getty
 #
