@@ -1,0 +1,100 @@
+#防止部分情况下U盘启动时CDROM挂载media错误，部分情况仍需要手动执行
+d-i preseed/early_command string umount /media || true
+
+d-i debian-installer/language string en_US:en
+d-i debian-installer/country string CN
+d-i debian-installer/locale string en_US.UTF-8
+
+#启用/禁用网络
+#d-i netcfg/enable boolean false
+#选择网卡-ubuntu识别的设备名称
+#d-i netcfg/choose_interface select auto
+d-i netcfg/choose_interface select em1
+#禁用dhcp
+d-i netcfg/disable_autoconfig boolean true
+# dhcp失败后手动设置
+#d-i netcfg/dhcp_failed note
+#d-i netcfg/dhcp_options select Configure network manually
+d-i netcfg/get_ipaddress string 172.18.61.103
+d-i netcfg/get_netmask string 255.255.255.0
+d-i netcfg/get_gateway string 172.18.61.254
+#d-i netcfg/get_gateway string none
+d-i netcfg/get_nameservers string 114.114.114.114
+d-i netcfg/confirm_static boolean true
+#设置计算机名
+d-i netcfg/get_hostname string sh-snow
+d-i netcfg/get_domain string 
+
+d-i passwd/user-fullname string sk
+d-i passwd/username string sk
+d-i passwd/user-password password wxts.sk
+d-i passwd/user-password-again password wxts.sk
+d-i user-setup/allow-password-weak boolean true
+d-i user-setup/encrypt-home boolean false
+
+d-i mirror/country string manual
+d-i mirror/http/hostname string cn.archive.ubuntu.com
+d-i mirror/http/directory string /ubuntu
+d-i mirror/http/proxy string
+d-i apt-setup/security_host string cn.archive.ubuntu.com
+
+d-i time/zone string Asia/Harbin
+d-i clock-setup/ntp boolean false
+d-i clock-setup/ntp-server string asia.pool.ntp.org
+d-i clock-setup/utc boolean false
+
+#启用raid时的2个提示
+d-i disk-detect/activate_mdadm boolean true
+d-i disk-detect/activate_dmraid boolean true
+#选择磁盘
+d-i partman-auto/disk string /dev/sda /dev/md126
+#使用lvm，且只有使用lvm才能同时配置多个磁盘
+d-i partman-auto/method string lvm
+d-i partman-lvm/device_remove_lvm boolean true
+d-i partman-lvm/confirm boolean true
+d-i partman-lvm/confirm_nooverwrite boolean true
+d-i partman-auto-lvm/no_boot boolean true
+d-i partman-auto-lvm/guided_size string max
+#指定分区细节
+d-i partman-auto/expert_recipe_file string /cdrom/preseed/partman.conf
+#boot分区300M左右，不低于200吧。$bootable{ }只设置boot分区
+# 300 1000 500 ext4  $primary{ }  $bootable{ }  method{ format } format{ }  use_filesystem{ }  filesystem{ ext4 }  mountpoint{ /boot } .  \
+d-i partman-partitioning/confirm_write_new_label boolean true
+d-i partman/choose_partition select finish
+d-i partman/confirm boolean true
+d-i partman/confirm_nooverwrite boolean true
+d-i partman/filter_mounted boolean false
+
+#d-i tasksel/first multiselect OpenSSH server
+#d-i 选择的是界面的显示名称，tasksel选择的是名称对应的包，tasksel只能选择tasksel --list-tasks命令支持的包
+tasksel tasksel/first multiselect openssh-server
+# 注释强制安装，在默认的preseed是启用的
+#tasksel tasksel/force-tasks string server
+#不安装以下包
+tasksel tasksel/skip-tasks string server
+#安装一些包
+#d-i pkgsel/include string nmon,rlwrap,byobu
+#不安装“推荐”的包，默认false
+d-i pkgsel/install-recommends boolean false
+d-i base-installer/install-recommends boolean false
+
+#"none" (no automatic updates),# "unattended-upgrades" (install security updates automatically)
+d-i pkgsel/update-policy select unattended-upgrades
+d-i grub-installer/only_debian boolean true
+d-i grub-installer/bootdev string /dev/sda
+d-i finish-install/reboot_in_progress note
+d-i debian-installer/exit/poweroff boolean true
+
+# Only install basic language packs. Let tasksel ask about tasks.
+d-i	pkgsel/language-pack-patterns	string
+# No language support packages.
+d-i	pkgsel/install-language-support	boolean false
+# Only ask the UTC question if there are other operating systems installed.
+d-i	clock-setup/utc-auto	boolean true
+# Verbose output and no boot splash screen.比较有用啊
+d-i	debian-installer/quiet	boolean true
+d-i	debian-installer/splash	boolean false
+# Wait for two seconds in grub
+d-i	grub-installer/timeout	string 2
+# 内核的后缀
+d-i  base-installer/kernel/altmeta   string lts-wily

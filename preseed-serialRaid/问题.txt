@@ -1,0 +1,20 @@
+1.使用光盘iso文件制作U盘启动时iso:\pool\main\l文件夹，m文件夹中部分文件的文件名过长被截断。
+2.如果提示挂载cd-rom时，alt+F2，umount /media,然后返回alt+f1重试
+3.安装过程中使用串口时，在本机是没用输出的；安装好后会有输入。
+
+
+Ubuntu 14要执行下面的操作
+1) Create a file called /etc/init/ttyS0.conf containing the following: 
+# ttyS0 - getty
+#
+# This service maintains a getty on ttyS0 from the point the system is
+# started until it is shut down again.
+start on stopped rc RUNLEVEL=[12345]
+stop on runlevel [!12345]
+respawn
+exec /sbin/getty -L 115200 ttyS0 vt102
+2) Ask upstart to start the getty 
+sudo start ttyS0
+
+
+
