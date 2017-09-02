@@ -17,9 +17,13 @@ timeout 30 3秒后自动执行，若为0则等待输入
 \# ui gfxboot bootlogo
 
 - 串口：  
-isolinux/txt.cfg[正常安装] isolinux/adtxt.cfg[恢复模式] vga=normal console=ttyS0,115200n8 isolinux/isolinux.cfg serial 0 115200
+isolinux/txt.cfg[正常安装]  
+isolinux/adtxt.cfg[恢复模式]   
+    console=ttyS0,115200n8   
+isolinux/isolinux.cfg   
+serial 0 115200
 
 - EFI自动化：  
 boot/grub/grub.cfg set timeout=1 set default=0 language=en country=CN localechooser/preferred-locale=en_US.UTF-8 keymap=us 
-- EFI串口：   
-vga=normal console=ttyS0,115200n8
+- EFI串口：     
+console=ttyS0,115200n8
