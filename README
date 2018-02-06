@@ -18,7 +18,6 @@ vim var/lib/dpkg/info/cdrom-detect.postinst
 		try_mount() {
 		        local device=$1
 		        local type=$2
-
 		        local ret=1
 添加这一行：	        umount /media || true
 重新生成initrd.gz
