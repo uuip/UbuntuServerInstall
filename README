@@ -37,6 +37,8 @@ language=en country=CN localechooser/preferred-locale=en_US.UTF-8 keymap=us
 6. 如果安装完卡开机画面，一般是显示设置的问题，进入恢复模式。
 Edit /etc/default/grub as follows:
     GRUB_CMDLINE_LINUX_DEFULT="quiet nomodeset"【删掉splash，解决卡在显卡检测，显示器无输入】
+我只遇到一次这个问题，没法重现了。如果在安装时解决，可以尝试isolinux/txt.cfg的append语句中加入nomodeset参数。
+网上流传一个nosplash，查了好多文档没见有对这个参数的说明，只见nomodeset。
 
 
 - MBR自动化：  
